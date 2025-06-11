@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\DcTransactionDetails;
+use App\Models\Supplier;
+use App\Models\RawMaterial;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DCReportExport;
@@ -35,10 +37,10 @@ class DCReportController extends Controller
         $dcReports = $query->orderBy('issue_date', 'desc')->get();
 
         // Get suppliers for filter dropdown
-        $suppliers = \App\Models\Supplier::where('status', 1)->orderBy('name')->get();
+        $suppliers = Supplier::where('status', 1)->orderBy('name')->get();
         
         // Get raw materials for filter dropdown
-        $rawMaterials = \App\Models\RawMaterial::where('status', 1)->orderBy('name')->get();
+        $rawMaterials = RawMaterial::where('status', 1)->orderBy('name')->get();
 
         return view('reports.dc-report.index', compact('dcReports', 'suppliers', 'rawMaterials'));
     }
