@@ -23,6 +23,54 @@
                     <span><b>DC Report</b></span>
                 </div>
                 <div class="card-body">
+                    <!-- Filter Form -->
+                    <form action="{{ route('dc-report.index') }}" method="GET" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="supplier_id">Supplier</label>
+                                    <select name="supplier_id" id="supplier_id" class="form-control">
+                                        <option value="">Select Supplier</option>
+                                        @foreach($suppliers as $supplier)
+                                            <option value="{{ $supplier->id }}" {{ request('supplier_id') == $supplier->id ? 'selected' : '' }}>
+                                                {{ $supplier->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="rm_id">Raw Material</label>
+                                    <select name="rm_id" id="rm_id" class="form-control">
+                                        <option value="">Select Raw Material</option>
+                                        @foreach($rawMaterials as $rm)
+                                            <option value="{{ $rm->id }}" {{ request('rm_id') == $rm->id ? 'selected' : '' }}>
+                                                {{ $rm->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="part_no">Part Number</label>
+                                    <input type="text" name="part_no" id="part_no" class="form-control" value="{{ request('part_no') }}" placeholder="Enter Part Number">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>&nbsp;</label>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">Filter</button>
+                                        <a href="{{ route('dc-report.index') }}" class="btn btn-secondary">Reset</a>
+                                        <a href="{{ route('dc-report.export', request()->query()) }}" class="btn btn-success">Export to Excel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                     <div class="table">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped table-responsive">
@@ -34,11 +82,12 @@
                                         <th>Code</th>
                                         <th>Supplier Name</th>
                                         <th>Part No</th>
-                                        <th>Quantity</th>
+                                        <th>Issued Qty</th>
+                                        <th>Received Qty</th>
+                                        <th>Available Qty</th>
                                         <th>UOM</th>
                                         <th>Unit Rate</th>
                                         <th>Total Value</th>
-                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,20 +100,15 @@
                                         <td>{{$report->dcmaster->supplier->name ?? 'N/A'}}</td>
                                         <td>{{$report->dcmaster->invoicepart->part_no ?? 'N/A'}}</td>
                                         <td>{{$report->issue_qty}}</td>
+                                        <td>{{$report->receive_qty ?? 0}}</td>
+                                        <td>{{$report->issue_qty - ($report->receive_qty ?? 0)}}</td>
                                         <td>{{$report->uom->name ?? 'N/A'}}</td>
                                         <td>{{$report->unit_rate}}</td>
-                                        <td>{{$report->basic_rate}}</td>
-                                        <td>
-                                            @if ($report->status == 0)
-                                                <span class="btn btn-sm text-white btn-danger">OPEN</span>
-                                            @else
-                                                <span class="btn btn-sm text-white btn-success">CLOSE</span>
-                                            @endif
-                                        </td>
+                                        <td>{{number_format(($report->unit_rate * 0.7) * ($report->issue_qty - ($report->receive_qty ?? 0)), 2)}}</td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="11" align="center">No Records Found!</td>
+                                        <td colspan="12" align="center">No Records Found!</td>
                                     </tr>
                                     @endforelse
                                 </tbody>

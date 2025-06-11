@@ -270,6 +270,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('ptspartrework/stickerqtyfetchdata', [StagewiseReceiveController::class,'ptsreworkstickerfetchdata'])->name('ptsreworkstickerfetchdata');
     Route::post('ptspartrework/store', [StagewiseReceiveController::class,'ptsreworkrevertStoredata'])->name('ptsreworkrevert.store');
     Route::get('/reports/dc-report', [DCReportController::class, 'index'])->name('dc-report.index');
+    Route::get('/reports/dc-report/export', [DCReportController::class, 'export'])->name('dc-report.export');
 
     Route::resources([
         'users' => UserController::class,
