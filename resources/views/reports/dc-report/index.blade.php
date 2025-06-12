@@ -99,8 +99,8 @@
                                         <th>Available Qty</th>
                                         <th>UOM</th>
                                         <th>Unit Rate</th>
-                                        <th>Total Value</th>
                                         <th>Age (Days)</th>
+                                        <th>Total Value</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,8 +117,8 @@
                                         <td>{{$report->issue_qty - ($report->receive_qty ?? 0)}}</td>
                                         <td>{{$report->uom->name ?? 'N/A'}}</td>
                                         <td>{{$report->unit_rate}}</td>
-                                        <td>{{number_format(($report->unit_rate * 0.7) * ($report->issue_qty - ($report->receive_qty ?? 0)), 2)}}</td>
                                         <td>{{$report->issue_date ? (new DateTime($report->issue_date))->diff(new DateTime())->days : 'N/A'}}</td>
+                                        <td>{{number_format(($report->unit_rate * 0.7) * ($report->issue_qty - ($report->receive_qty ?? 0)), 2)}}</td>
                                     </tr>
                                     @empty
                                     <tr>

@@ -12,6 +12,7 @@
             <th>Available Qty</th>
             <th>UOM</th>
             <th>Unit Rate</th>
+            <th>Age</th>
             <th>Total Value</th>
         </tr>
     </thead>
@@ -29,8 +30,24 @@
             <td>{{$report->issue_qty - ($report->receive_qty ?? 0)}}</td>
             <td>{{$report->uom->name ?? 'N/A'}}</td>
             <td>{{$report->unit_rate}}</td>
+            <td>{{$report->issue_date ? (new DateTime($report->issue_date))->diff(new DateTime())->days : 'N/A'}}</td>
             <td>{{number_format(($report->unit_rate * 0.7) * ($report->issue_qty - ($report->receive_qty ?? 0)), 2)}}</td>
+            
         </tr>
         @endforeach
+        @if(count($dcReports) > 0)
+        <tr>
+            <td colspan="6" style="text-align: right; font-weight: bold;">Total:</td>
+            <td style="font-weight: bold;">{{$dcReports->sum('issue_qty')}}</td>
+            <td style="font-weight: bold;">{{$dcReports->sum('receive_qty')}}</td>
+            <td style="font-weight: bold;">{{$dcReports->sum('issue_qty') - $dcReports->sum('receive_qty')}}</td>
+            <td></td>
+            <td></td>
+            <td style="font-weight: bold;">{{number_format($dcReports->sum(function($report) {
+                return ($report->unit_rate * 0.7) * ($report->issue_qty - ($report->receive_qty ?? 0));
+            }), 2)}}</td>
+            <td></td>
+        </tr>
+        @endif
     </tbody>
 </table> 
