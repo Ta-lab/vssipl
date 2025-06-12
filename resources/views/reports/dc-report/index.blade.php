@@ -60,6 +60,18 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label for="from_date">From Date</label>
+                                    <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request('from_date', date('Y-m-d', strtotime('-1 day'))) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="to_date">To Date</label>
+                                    <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request('to_date', date('Y-m-d')) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label>&nbsp;</label>
                                     <div>
                                         <button type="submit" class="btn btn-primary">Filter</button>

@@ -15,6 +15,12 @@ class DCReportController extends Controller
     {
         $query = DcTransactionDetails::with(['rcmaster', 'dcmaster.supplier', 'dcmaster.invoicepart', 'uom']);
 
+        // Apply date filters
+        $fromDate = $request->from_date ?? date('Y-m-d', strtotime('-1 day'));
+        $toDate = $request->to_date ?? date('Y-m-d');
+        
+        $query->whereBetween('issue_date', [$fromDate, $toDate]);
+
         // Apply filters if they exist
         if ($request->has('supplier_id') && $request->supplier_id) {
             $query->whereHas('dcmaster.supplier', function($q) use ($request) {
@@ -42,14 +48,18 @@ class DCReportController extends Controller
         // Get raw materials for filter dropdown
         $rawMaterials = RawMaterial::where('status', 1)->orderBy('name')->get();
 
-        
-
-        return view('reports.dc-report.index', compact('dcReports', 'suppliers', 'rawMaterials', 'partNumbers'));
+        return view('reports.dc-report.index', compact('dcReports', 'suppliers', 'rawMaterials'));
     }
 
     public function export(Request $request)
     {
         $query = DcTransactionDetails::with(['rcmaster', 'dcmaster.supplier', 'dcmaster.invoicepart', 'uom']);
+
+        // Apply date filters
+        $fromDate = $request->from_date ?? date('Y-m-d', strtotime('-1 day'));
+        $toDate = $request->to_date ?? date('Y-m-d');
+        
+        $query->whereBetween('issue_date', [$fromDate, $toDate]);
 
         // Apply filters if they exist
         if ($request->has('supplier_id') && $request->supplier_id) {
