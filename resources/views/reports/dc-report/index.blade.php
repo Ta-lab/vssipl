@@ -29,11 +29,11 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="supplier_id">Supplier</label>
-                                    <select name="supplier_id" id="supplier_id" class="form-control">
+                                    <select name="supplier_id" id="supplier_id" class="form-control select2">
                                         <option value="">Select Supplier</option>
                                         @foreach($suppliers as $supplier)
                                             <option value="{{ $supplier->id }}" {{ request('supplier_id') == $supplier->id ? 'selected' : '' }}>
-                                                {{ $supplier->name }}
+                                                {{ $supplier->supplier_code }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -42,7 +42,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="rm_id">Raw Material</label>
-                                    <select name="rm_id" id="rm_id" class="form-control">
+                                    <select name="rm_id" id="rm_id" class="form-control select2">
                                         <option value="">Select Raw Material</option>
                                         @foreach($rawMaterials as $rm)
                                             <option value="{{ $rm->id }}" {{ request('rm_id') == $rm->id ? 'selected' : '' }}>
@@ -120,4 +120,14 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+    </script>
+@endpush

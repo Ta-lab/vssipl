@@ -37,12 +37,14 @@ class DCReportController extends Controller
         $dcReports = $query->orderBy('issue_date', 'desc')->get();
 
         // Get suppliers for filter dropdown
-        $suppliers = Supplier::where('status', 1)->orderBy('name')->get();
+        $suppliers = Supplier::where('status', 1)->where('supplier_type','=',1)->orderBy('name')->get();
         
         // Get raw materials for filter dropdown
         $rawMaterials = RawMaterial::where('status', 1)->orderBy('name')->get();
 
-        return view('reports.dc-report.index', compact('dcReports', 'suppliers', 'rawMaterials'));
+        
+
+        return view('reports.dc-report.index', compact('dcReports', 'suppliers', 'rawMaterials', 'partNumbers'));
     }
 
     public function export(Request $request)
