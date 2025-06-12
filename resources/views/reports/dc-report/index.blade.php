@@ -122,9 +122,23 @@
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="12" align="center">No Records Found!</td>
+                                        <td colspan="13" align="center">No Records Found!</td>
                                     </tr>
                                     @endforelse
+                                    @if(count($dcReports) > 0)
+                                    <tr class="font-weight-bold">
+                                        <td colspan="6" align="right">Total:</td>
+                                        <td>{{$dcReports->sum('issue_qty')}}</td>
+                                        <td>{{$dcReports->sum('receive_qty')}}</td>
+                                        <td>{{$dcReports->sum('issue_qty') - $dcReports->sum('receive_qty')}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{number_format($dcReports->sum(function($report) {
+                                            return ($report->unit_rate * 0.7) * ($report->issue_qty - ($report->receive_qty ?? 0));
+                                        }), 2)}}</td>
+                                        <td></td>
+                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
