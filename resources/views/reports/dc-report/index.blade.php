@@ -100,6 +100,7 @@
                                         <th>UOM</th>
                                         <th>Unit Rate</th>
                                         <th>Total Value</th>
+                                        <th>Age (Days)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,6 +118,7 @@
                                         <td>{{$report->uom->name ?? 'N/A'}}</td>
                                         <td>{{$report->unit_rate}}</td>
                                         <td>{{number_format(($report->unit_rate * 0.7) * ($report->issue_qty - ($report->receive_qty ?? 0)), 2)}}</td>
+                                        <td>{{$report->issue_date ? \Carbon\Carbon::parse($report->issue_date)->diffInDays(now()) : 'N/A'}}</td>
                                     </tr>
                                     @empty
                                     <tr>
