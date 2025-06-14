@@ -42,6 +42,7 @@ use App\Http\Controllers\PermissionController;
 use App\Models\InvoiceDetails;
 use Spatie\Permission\Contracts\Role;
 use App\Http\Controllers\DCReportController;
+use App\Http\Controllers\TransDataD12Controller;
 
 // invoice updated
 
@@ -271,6 +272,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('ptspartrework/store', [StagewiseReceiveController::class,'ptsreworkrevertStoredata'])->name('ptsreworkrevert.store');
     Route::get('/reports/dc-report', [DCReportController::class, 'index'])->name('dc-report.index');
     Route::get('/reports/dc-report/export', [DCReportController::class, 'export'])->name('dc-report.export');
+    Route::get('open-route-card-report', [TransDataD12Controller::class, 'openRouteCardReport'])->name('open_route_card.report');
+    Route::get('open-route-card-report/export', [TransDataD12Controller::class, 'exportOpenRouteCardReport'])->name('open_route_card.export');
 
     Route::resources([
         'users' => UserController::class,

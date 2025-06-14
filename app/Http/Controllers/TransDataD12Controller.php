@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\TransDataD12;
 use App\Http\Requests\StoreTransDataD12Request;
 use App\Http\Requests\UpdateTransDataD12Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OpenRouteCardReportExport;
 
 class TransDataD12Controller extends Controller
 {
@@ -62,5 +64,43 @@ class TransDataD12Controller extends Controller
     public function destroy(TransDataD12 $transDataD12)
     {
         //
+    }
+
+    /**
+     * Display the open route card report.
+     */
+    public function openRouteCardReport()
+    {
+        $routeCards = \App\Models\TransDataD12::with([
+            'partmaster',
+            'rm_master',
+            'currentprocessmaster',
+            'currentproductprocessmaster',
+            'current_rcmaster',
+            'previous_rcmaster',
+            'heat_nomaster',
+            'grndata',
+            'receiver',
+        ])->paginate(20);
+        return view('open_route_card.report', compact('routeCards'));
+    }
+
+    /**
+     * Export the open route card report as an Excel file.
+     */
+    public function exportOpenRouteCardReport()
+    {
+         $query = \App\Models\TransDataD12::with([
+             'partmaster',
+             'rm_master',
+             'currentprocessmaster',
+             'currentproductprocessmaster',
+             'current_rcmaster',
+             'previous_rcmaster',
+             'heat_nomaster',
+             'grndata',
+             'receiver',
+         ]);
+         return Excel::download(new OpenRouteCardReportExport($query), 'open_route_card_report.xlsx');
     }
 }
