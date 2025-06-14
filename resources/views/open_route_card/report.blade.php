@@ -44,7 +44,7 @@
                                 <td>{{ $rc->open_date }}</td>
                                 <td>{{ $rc->rm_master->name ?? '' }}</td>
                                 <td>{{ $rc->rm_issue_qty }}</td>
-                                <td>{{ $rc->rm_master->category->name ?? '' }}</td>
+                                <td>{{ $rc->process_id == 3 ? 'kg' : 'Nos' }}</td>
                                 <td>{{ $rc->partmaster->child_part_no ?? '' }}</td>
                                 <td>{{ $rc->receive_qty }}</td>
                                 <td>{{ $rc->reject_qty }}</td>
@@ -53,9 +53,9 @@
                                 <td>{{ optional(\App\Models\BomMaster::where('child_part_id', $rc->part_id)->first())->manual_usage }}</td>
                                 <td>{{ $rc->issue_qty }}</td>
                                 <td>{{ $rc->receive_qty - $rc->issue_qty }}</td>
-                                <td>{{ $rc->rm_master->category->name ?? '' }}</td>
+                                <td>{{ $rc->process_id == 3 ? 'kg' : 'Nos' }}</td>
                                 <td>{{ $rc->no_days ?? '' }}</td>
-                                <td>{{ $rc->receiver->name ?? '' }}</td>
+                                <td>{{ $rc->currentproductprocessmaster && $rc->currentproductprocessmaster->foremanMaster ? $rc->currentproductprocessmaster->foremanMaster->name : '' }}</td>
                                 <td>{{ optional($rc->partmaster)->group_id ? optional(\App\Models\GroupMaster::find(optional($rc->partmaster)->group_id))->name : '' }}</td>
                                 <td>{{ optional($rc->partmaster)->machine_id ? optional(\App\Models\MachineMaster::find(optional($rc->partmaster)->machine_id))->machine_name : '' }}</td>
                                 <td>{{ $rc->rm_requisition_no ?? '' }}</td>
