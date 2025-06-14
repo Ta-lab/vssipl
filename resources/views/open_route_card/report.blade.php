@@ -54,10 +54,10 @@
                                 <td>{{ $rc->issue_qty }}</td>
                                 <td>{{ $rc->receive_qty - $rc->issue_qty }}</td>
                                 <td>{{ $rc->process_id == 3 ? 'kg' : 'Nos' }}</td>
-                                <td>{{ $rc->no_days ?? '' }}</td>
+                                <td>{{ $rc->open_date ? (new DateTime($rc->open_date))->diff(new DateTime())->days : '' }}</td>
                                 <td>{{ $rc->currentproductprocessmaster && $rc->currentproductprocessmaster->foremanMaster ? $rc->currentproductprocessmaster->foremanMaster->name : '' }}</td>
-                                <td>{{ optional($rc->partmaster)->group_id ? optional(\App\Models\GroupMaster::find(optional($rc->partmaster)->group_id))->name : '' }}</td>
-                                <td>{{ optional($rc->partmaster)->machine_id ? optional(\App\Models\MachineMaster::find(optional($rc->partmaster)->machine_id))->machine_name : '' }}</td>
+                                <td>{{ ($rc->currentproductprocessmaster && $rc->currentproductprocessmaster->group_master) ? $rc->currentproductprocessmaster->group_master->name : '' }}</td>
+                                <td>{{ ($rc->currentproductprocessmaster && $rc->currentproductprocessmaster->machine_master) ? $rc->currentproductprocessmaster->machine_master->machine_name : '' }}</td>
                                 <td>{{ $rc->rm_requisition_no ?? '' }}</td>
                             </tr>
                             @endforeach
